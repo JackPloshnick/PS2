@@ -12,10 +12,11 @@ leemis <- function(input){
       }
     }
   }
-  return(out)
+  return(max(out))
 }
 
-max(leemis(data))
+leemis(data)
+
 
 ChoGains <- function(input){
   first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
@@ -29,7 +30,27 @@ ChoGains <- function(input){
       }
     }
   }
-  return(out)
+  return(sqrt(sum(out)))
 }
 
-sqrt(sum(ChoGains(data)))
+ChoGains(data)
+
+
+# Return Leemis or Cho-Gains
+
+Leemis.or.ChoGains <- function(input,data){ 
+  if(input == "Leemis") {  #If input is "Leemis"
+    print(leemis(data)) # Then print the leemis results only
+  } else if(input == "ChoGains") { #If input is "ChoGains"
+    print(ChoGains(data)) #Then print chogains results only
+  } else{ # if input is anything else
+      print(c(leemis(data), ChoGains(data))) #Print both Leemis and ChoGains results 
+   }
+}
+  
+
+Leemis.or.ChoGains("Both", data)
+
+
+
+
