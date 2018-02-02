@@ -25,11 +25,11 @@ ChoGains <- function(input){
   for(j in 1:length(levels(table$first.digit))){ #from first point in table to total number of points in table
     for(i in 1:9){ # for numbers 1 to 9
       if(as.numeric(levels(table$first.digit)[j])==i){ #if the first digit from table = 1:9, run next line
-        out[i] <- sqrt( sum( (proportion[j] - log10(1+1/i))^2))
+        out[i] <- (proportion[j] - log10(1+1/i))^2
       }
     }
   }
   return(out)
 }
 
-ChoGains(data)
+sqrt(sum(ChoGains(data)))
