@@ -49,9 +49,8 @@ Leemis.or.ChoGains <- function(input,data){
 }
   
 
-Leemis.or.ChoGains( "both" ,data)
+Leemis.or.ChoGains( "both" , data)
 
-leemis <-.7
 
 #Question 2 
 
@@ -82,3 +81,18 @@ Critical.Values.ChoGains <- function(data){
 }
 
 Critical.Values.ChoGains(data)
+
+
+Critical.Values <- function(input,data){ 
+  if(input == "Leemis") {  #If input is "Leemis"
+    return(Critical.Values.Leemis(data)) # Then print the leemis results only
+  } else if(input == "ChoGains") { #If input is "ChoGains"
+    return(Critical.Values.ChoGains(data)) #Then print chogains results only
+  } else { # if input is anything else
+    print(c(Critical.Values.Leemis(data), Critical.Values.ChoGains(data))) #Print both Leemis and ChoGains results 
+  }
+}
+
+Critical.Values("Leemis" , data)
+
+
