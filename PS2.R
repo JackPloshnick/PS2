@@ -112,12 +112,12 @@ Critical.Values("Leemis" , data)
 output <- data.frame()
 
 Master.Function <- function(input,data){
-  data.frame(substring(Critical.Values(input, data),4) ,Leemis.or.ChoGains(input, data), substring(Critical.Values(input, data),1,3) )
-}
+  output = data.frame(substring(Critical.Values(input, data),4) ,Leemis.or.ChoGains(input, data), 
+             substring(Critical.Values(input, data),1,3))
 
-output <- Master.Function("Both", data)
-
+} 
+output <- Master.Function("Both", data)   ### how to get this stuff in the function???
 colnames(output) <- c("Test","Statistic", "Critical Value")
 
+sig.values <- data.frame("describe the shit")
 
-### Substring
