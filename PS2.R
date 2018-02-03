@@ -60,13 +60,13 @@ Leemis.or.ChoGains( "both" , data)
 #Tells you Leemis signifigance level
 Critical.Values.Leemis <- function(data){
   if(leemis(data) >= .851 & leemis(data) < .966){  #if Leemis stat between .851 and .966, return .10 signifigance
-    print("Critical Value is less than or equal to .10 (Leemis)")
+    print("*   (Leemis)")
    }else if(leemis(data) >= .967 & leemis(data) < 1.211){ #if leemis stat between .967 and 1.211, return .05 signifigance
-    print("Critical Value is less than or equal to .05( Leemis)")
+    print("**  (Leemis)")
   }else if(leemis(data) >= 1.212) { # if leemis stat bigger than 1.212, return .01 signifigance
-    print("Critical Value is less than or equal to .01 (Leemis)")
+    print("*** (Leemis)")
   }else { #if leemis stat less than ,851, return no signifigance 
-    print("Critical Value is not signifigant (Leemis)")
+    print("    (Leemis)")
   }
 }
 
@@ -75,13 +75,13 @@ Critical.Values.Leemis(data)
 #Tells you Cho-Gains signifigance value
 Critical.Values.ChoGains <- function(data){
   if(ChoGains(data) >= 1.212 & ChoGains(data) < 1.329){
-    print("Critical Value is less than or equal to .10 (ChoGains)")
+    print("*   (ChoGains)")
   }else if(ChoGains(data) >= 1.330 & ChoGains(data) < 1.568){
-    print("Critical Value is less than or equal to .05(ChoGains)")
+    print("**  (ChoGains)")
   }else if(leemis(data) >= 1.569) {
-    print("Critical Value is less than or equal to .01(ChoGains)")
+    print("*** (ChoGains)")
   }else {
-    print("Critical Value is not signifigant(ChoGains)")
+    print("    (ChoGains)")
   }
 }
 
@@ -109,8 +109,15 @@ Critical.Values("Leemis" , data)
 #input= "Cho-Gains" returns cho-gains statistic and critical value
 #any other input returns both
 
+output <- data.frame()
+
 Master.Function <- function(input,data){
-  output = c(Leemis.or.ChoGains(input, data), Critical.Values(input, data))
+  data.frame(substring(Critical.Values(input, data),4) ,Leemis.or.ChoGains(input, data), substring(Critical.Values(input, data),1,3) )
 }
 
-Master.Function("Leemis", data)
+output <- Master.Function("Both", data)
+
+colnames(output) <- c("Test","Statistic", "Critical Value")
+
+
+### Substring
