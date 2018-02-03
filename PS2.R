@@ -49,8 +49,36 @@ Leemis.or.ChoGains <- function(input,data){
 }
   
 
-Leemis.or.ChoGains("Both", data)
+Leemis.or.ChoGains( "both" ,data)
 
+leemis <-.7
 
+#Question 2 
 
+Critical.Values.Leemis <- function(data){
+  if(leemis(data) >= .851 & leemis(data) < .966){
+    print("Critical Value is less than or equal to .10 (Leemis)")
+   }else if(leemis(data) >= .967 & leemis(data) < 1.211){
+    print("Critical Value is less than or equal to .05( Leemis)")
+  }else if(leemis(data) >= 1.212) {
+    print("Critical Value is less than or equal to .01 (Leemis)")
+  }else {
+    print("Critical Value is not signifigant (Leemis)")
+  }
+}
 
+Critical.Values.Leemis(data)
+
+Critical.Values.ChoGains <- function(data){
+  if(ChoGains(data) >= 1.212 & ChoGains(data) < 1.329){
+    print("Critical Value is less than or equal to .10 (ChoGains)")
+  }else if(ChoGains(data) >= 1.330 & ChoGains(data) < 1.568){
+    print("Critical Value is less than or equal to .05(ChoGains)")
+  }else if(leemis(data) >= 1.569) {
+    print("Critical Value is less than or equal to .01(ChoGains)")
+  }else {
+    print("Critical Value is not signifigant(ChoGains)")
+  }
+}
+
+Critical.Values.ChoGains(data)
