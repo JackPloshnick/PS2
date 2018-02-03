@@ -1,5 +1,6 @@
 data= c(0:100)
 
+#returns Leemis' m statistic
 leemis <- function(input){
   first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
   table <- as.data.frame(table(first.digit)) #puts above in a table with frequency 
@@ -17,7 +18,7 @@ leemis <- function(input){
 
 leemis(data)
 
-
+#Returns Cho-Gains d statistic
 ChoGains <- function(input){
   first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
   table <- as.data.frame(table(first.digit)) #puts above in a table with frequency 
@@ -37,7 +38,9 @@ ChoGains(data)
 
 
 # Return Leemis or Cho-Gains
-
+#input= "Leemis" returns leemis statistic
+#input = "Cho-Gains" returns Cho-Gains Statistic
+# any other input returns both 
 Leemis.or.ChoGains <- function(input,data){ 
   if(input == "Leemis") {  #If input is "Leemis"
     print(leemis(data)) # Then print the leemis results only
@@ -54,20 +57,22 @@ Leemis.or.ChoGains( "both" , data)
 
 #Question 2 
 
+#Tells you Leemis signifigance level
 Critical.Values.Leemis <- function(data){
-  if(leemis(data) >= .851 & leemis(data) < .966){
+  if(leemis(data) >= .851 & leemis(data) < .966){  #if Leemis stat between .851 and .966, return .10 signifigance
     print("Critical Value is less than or equal to .10 (Leemis)")
-   }else if(leemis(data) >= .967 & leemis(data) < 1.211){
+   }else if(leemis(data) >= .967 & leemis(data) < 1.211){ #if leemis stat between .967 and 1.211, return .05 signifigance
     print("Critical Value is less than or equal to .05( Leemis)")
-  }else if(leemis(data) >= 1.212) {
+  }else if(leemis(data) >= 1.212) { # if leemis stat bigger than 1.212, return .01 signifigance
     print("Critical Value is less than or equal to .01 (Leemis)")
-  }else {
+  }else { #if leemis stat less than ,851, return no signifigance 
     print("Critical Value is not signifigant (Leemis)")
   }
 }
 
 Critical.Values.Leemis(data)
 
+#Tells you Cho-Gains signifigance value
 Critical.Values.ChoGains <- function(data){
   if(ChoGains(data) >= 1.212 & ChoGains(data) < 1.329){
     print("Critical Value is less than or equal to .10 (ChoGains)")
@@ -82,6 +87,9 @@ Critical.Values.ChoGains <- function(data){
 
 Critical.Values.ChoGains(data)
 
+#input= "Leemis" returns leemis critical value
+#input= "Cho-Gains" returns cho-gains critical value
+#any other input returns both
 
 Critical.Values <- function(input,data){ 
   if(input == "Leemis") {  #If input is "Leemis"
@@ -95,4 +103,14 @@ Critical.Values <- function(input,data){
 
 Critical.Values("Leemis" , data)
 
+####Puts it all together 
 
+#input= "Leemis" returns leemis statistic and critical value
+#input= "Cho-Gains" returns cho-gains statistic and critical value
+#any other input returns both
+
+Master.Function <- function(input,data){
+  output = c(Leemis.or.ChoGains(input, data), Critical.Values(input, data))
+}
+
+Master.Function("Leemis", data)
