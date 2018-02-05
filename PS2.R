@@ -114,3 +114,15 @@ print.benfords = function(votes){
 }
 
 print.benfords(data)
+
+
+#### Write CSV
+Benfords.CSV <- function(votes){
+  ## Makes a file
+  sink(file = "Benfords_data.csv")
+  print.benfords(votes)
+  ## sinks file
+  sink()
+}
+
+Benfords.CSV(votes)
