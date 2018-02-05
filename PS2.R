@@ -1,7 +1,7 @@
 data= c(0:100)
 
 #returns Leemis' m statistic
-leemis <- function(input){
+leemis.full <- function(input){
   first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
   table <- as.data.frame(table(first.digit)) #puts above in a table with frequency 
   proportion <- table$Freq/sum(table$Freq) # number of times each number occurs/ total data points
@@ -13,13 +13,19 @@ leemis <- function(input){
       }
     }
   }
-  return(max(out))
+  return(out)
+}
+
+leemis.full(data)
+
+leemis <- function(input){
+  return(max(leemis.full(input)))
 }
 
 leemis(data)
 
 #Returns Cho-Gains d statistic
-ChoGains <- function(input){
+ChoGains.full <- function(input){
   first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
   table <- as.data.frame(table(first.digit)) #puts above in a table with frequency 
   proportion <- table$Freq/sum(table$Freq) # number of times each number occurs/ total data points
@@ -31,11 +37,16 @@ ChoGains <- function(input){
       }
     }
   }
-  return(sqrt(sum(out)))
+  return(out)
+}
+
+ChoGains.full.data <- ChoGains.full(data)
+
+ChoGains <- function(input){
+  return(sqrt(sum(ChoGains.full(input))))
 }
 
 ChoGains(data)
-
 
 # Return Leemis or Cho-Gains
 #input= "Leemis" returns leemis statistic
@@ -43,16 +54,18 @@ ChoGains(data)
 # any other input returns both 
 Leemis.or.ChoGains <- function(input,data){ 
   if(input == "Leemis") {  #If input is "Leemis"
-    print(leemis(data)) # Then print the leemis results only
+    print(leemis(data))
+    print(leemis.full(data))# Then print the leemis results only
   } else if(input == "ChoGains") { #If input is "ChoGains"
-    print(ChoGains(data)) #Then print chogains results only
+    print(ChoGains(data))
+    print(ChoGains.full(data))#Then print chogains results only
   } else{ # if input is anything else
-      print(c(leemis(data), ChoGains(data))) #Print both Leemis and ChoGains results 
+      print(c(leemis(data), ChoGains(data)))
+      print(c(leemis.full(data), ChoGains.full(data)))#Print both Leemis and ChoGains results 
    }
 }
   
-
-Leemis.or.ChoGains( "both" , data)
+Leemis.or.ChoGains( "Both" , data)
 
 
 #Question 2 
@@ -87,12 +100,6 @@ Critical.Values.ChoGains <- function(data){
 
 Critical.Values.ChoGains(data)
 
-#input= "Leemis" returns leemis critical value
-#input= "Cho-Gains" returns cho-gains critical value
-#any other input returns both
-
-
-
 ####Puts it all together 
 
 
@@ -110,7 +117,8 @@ print.benfords = function(votes){
   print(benfords.table)
   ### Displays key to asterisks
   cat("  
-  No star means a > .10 , * indicates a < .10, ** indicates a < .05, *** indicates a < .01")
+  No star indicates a > .10 , * indicates a < .10, ** indicates a < .05, 
+      *** indicates a < .01")
 }
 
 print.benfords(data)
