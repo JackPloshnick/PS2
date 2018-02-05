@@ -60,13 +60,13 @@ Leemis.or.ChoGains( "both" , data)
 #Tells you Leemis signifigance level
 Critical.Values.Leemis <- function(data){
   if(leemis(data) >= .851 & leemis(data) < .966){  #if Leemis stat between .851 and .966, return .10 signifigance
-    print("*   (Leemis)")
+    print("*")
    }else if(leemis(data) >= .967 & leemis(data) < 1.211){ #if leemis stat between .967 and 1.211, return .05 signifigance
-    print("**  (Leemis)")
+    print("**")
   }else if(leemis(data) >= 1.212) { # if leemis stat bigger than 1.212, return .01 signifigance
-    print("*** (Leemis)")
+    print("***")
   }else { #if leemis stat less than ,851, return no signifigance 
-    print("    (Leemis)")
+    print(" ")
   }
 }
 
@@ -75,13 +75,13 @@ Critical.Values.Leemis(data)
 #Tells you Cho-Gains signifigance value
 Critical.Values.ChoGains <- function(data){
   if(ChoGains(data) >= 1.212 & ChoGains(data) < 1.329){
-    print("*   (ChoGains)")
+    print("*")
   }else if(ChoGains(data) >= 1.330 & ChoGains(data) < 1.568){
-    print("**  (ChoGains)")
+    print("**")
   }else if(leemis(data) >= 1.569) {
-    print("*** (ChoGains)")
+    print("***")
   }else {
-    print("    (ChoGains)")
+    print(" ")
   }
 }
 
@@ -91,33 +91,26 @@ Critical.Values.ChoGains(data)
 #input= "Cho-Gains" returns cho-gains critical value
 #any other input returns both
 
-Critical.Values <- function(input,data){ 
-  if(input == "Leemis") {  #If input is "Leemis"
-    return(Critical.Values.Leemis(data)) # Then print the leemis results only
-  } else if(input == "ChoGains") { #If input is "ChoGains"
-    return(Critical.Values.ChoGains(data)) #Then print chogains results only
-  } else { # if input is anything else
-    print(c(Critical.Values.Leemis(data), Critical.Values.ChoGains(data))) #Print both Leemis and ChoGains results 
-  }
-}
 
-Critical.Values("Leemis" , data)
 
 ####Puts it all together 
 
-#input= "Leemis" returns leemis statistic and critical value
-#input= "Cho-Gains" returns cho-gains statistic and critical value
-#any other input returns both
 
-output <- data.frame()
+#######
+print.benfords = function(votes){
+  
+  ### Makes it all a table
+  benfords.table <- rbind(c(leemis(data), Critical.Values.Leemis(data)), c(ChoGains(data), Critical.Values.ChoGains(data)))
+  
+  ### adds names
+  rownames(benfords.table) <- c("Leemis","Cho-gaines'")
+  colnames(benfords.table) <- c("Statistic", "Significance")
+  
+  ### print
+  print(benfords.table)
+  ### Displays key to asterisks
+  cat("  
+  No star means a > .10 , * indicates a < .10, ** indicates a < .05, *** indicates a < .01")
+}
 
-Master.Function <- function(input,data){
-  output = data.frame(substring(Critical.Values(input, data),4) ,Leemis.or.ChoGains(input, data), 
-             substring(Critical.Values(input, data),1,3))
-
-} 
-output <- Master.Function("Both", data)   ### how to get this stuff in the function???
-colnames(output) <- c("Test","Statistic", "Critical Value")
-
-sig.values <- data.frame("describe the shit")
-
+print.benfords(data)
