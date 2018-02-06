@@ -1,10 +1,18 @@
-data= c(0:100)
 
-#returns Leemis' m statistic
-leemis.full <- function(input){
+data <- c(1:100)
+
+# Return Leemis or Cho-Gains
+#input= "Leemis" returns leemis statistic, 
+#input = "Cho-Gains" returns Cho-Gains Statistic, and full digit distribution 
+# any other input returns both, and full digit distribution 
+Leemis.or.ChoGains <- function(input,data){ 
+  
+  ## Gets first digit 
   first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
   table <- as.data.frame(table(first.digit)) #puts above in a table with frequency 
   proportion <- table$Freq/sum(table$Freq) # number of times each number occurs/ total data points
+  
+  # calculates Leemis statistic 
   out <- numeric() #ensures final result is a numeric
   for(j in 1:length(levels(table$first.digit))){ #from first point in table to total number of points in table
     for(i in 1:9){ # for numbers 1 to 9
@@ -13,59 +21,35 @@ leemis.full <- function(input){
       }
     }
   }
-  return(out)
-}
-
-leemis.full(data)
-
-leemis <- function(input){
-  return(max(leemis.full(input)))
-}
-
-leemis(data)
-
-#Returns Cho-Gains d statistic
-ChoGains.full <- function(input){
-  first.digit <- as.numeric(substr(data, 1, 1)) #takes first digit of each data point as a numeric
-  table <- as.data.frame(table(first.digit)) #puts above in a table with frequency 
-  proportion <- table$Freq/sum(table$Freq) # number of times each number occurs/ total data points
-  out <- numeric() #ensures final result is a numeric
+  leemis.full = out 
+  leemis = max(out)
+  
+  #Calculates ChoGains statistic 
+  out.CG <- numeric()
   for(j in 1:length(levels(table$first.digit))){ #from first point in table to total number of points in table
     for(i in 1:9){ # for numbers 1 to 9
       if(as.numeric(levels(table$first.digit)[j])==i){ #if the first digit from table = 1:9, run next line
-        out[i] <- (proportion[j] - log10(1+1/i))^2
+        out.CG[i] <- (proportion[j] - log10(1+1/i))^2
       }
     }
   }
-  return(out)
-}
-
-ChoGains.full.data <- ChoGains.full(data)
-
-ChoGains <- function(input){
-  return(sqrt(sum(ChoGains.full(input))))
-}
-
-ChoGains(data)
-
-# Return Leemis or Cho-Gains
-#input= "Leemis" returns leemis statistic
-#input = "Cho-Gains" returns Cho-Gains Statistic
-# any other input returns both 
-Leemis.or.ChoGains <- function(input,data){ 
-  if(input == "Leemis") {  #If input is "Leemis"
-    print(leemis(data))
-    print(leemis.full(data))# Then print the leemis results only
-  } else if(input == "ChoGains") { #If input is "ChoGains"
-    print(ChoGains(data))
-    print(ChoGains.full(data))#Then print chogains results only
-  } else{ # if input is anything else
-      print(c(leemis(data), ChoGains(data)))
-      print(c(leemis.full(data), ChoGains.full(data)))#Print both Leemis and ChoGains results 
-   }
-}
+  ChoGains.full <- out.CG
+  ChoGains = sqrt(sum(out.CG))
   
-Leemis.or.ChoGains( "Both" , data)
+  #control system 
+  if(input == "Leemis") {  #If input is "Leemis"
+    print(leemis)
+    print(leemis.full )# Then print the leemis results only
+  } else if(input == "ChoGains") { #If input is "ChoGains"
+    print(ChoGains)
+    print(ChoGains.full )#Then print chogains results only
+  } else{ # if input is anything else
+    print(c(leemis, ChoGains))
+    print(c(leemis.full, ChoGains.full))#Print both Leemis and ChoGains results 
+  }
+}
+
+Leemis.or.ChoGains( "ChoGains" , data)
 
 
 #Question 2 
@@ -100,24 +84,25 @@ Critical.Values.ChoGains <- function(data){
 
 Critical.Values.ChoGains(data)
 
-####Puts it all together 
+
 
 
 #######
-print.benfords = function(votes){
+print.benfords = function(data){
   
   ### Makes it all a table
-  benfords.table <- rbind(c(leemis(data), Critical.Values.Leemis(data)), c(ChoGains(data), Critical.Values.ChoGains(data)))
+  benfords.table = rbind(c(leemis(data),Critical.Values.Leemis(data)),
+                          c(ChoGains(data), Critical.Values.ChoGains(data)))
   
   ### adds names
-  rownames(benfords.table) <- c("Leemis","Cho-gaines'")
-  colnames(benfords.table) <- c("Statistic", "Significance")
+  rownames(benfords.table) = c("Leemis","Cho-gaines'")
+  colnames(benfords.table) = c("Statistic", "Significance")
   
   ### print
-  print(benfords.table)
+  print.table(benfords.table)
   ### Displays key to asterisks
   cat("  
-  No star indicates a > .10 , * indicates a < .10, ** indicates a < .05, 
+      No star indicates a > .10 , * indicates a < .10, ** indicates a < .05, 
       *** indicates a < .01")
 }
 
@@ -125,7 +110,7 @@ print.benfords(data)
 
 
 #### Write CSV
-Benfords.CSV <- function(votes){
+Benfords.CSV <- function(data){
   ## Makes a file
   sink(file = "Benfords_data.csv")
   print.benfords(votes)
@@ -133,4 +118,8 @@ Benfords.CSV <- function(votes){
   sink()
 }
 
-Benfords.CSV(votes)
+Benfords.CSV(data)
+
+
+
+
