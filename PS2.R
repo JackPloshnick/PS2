@@ -2,9 +2,11 @@
 data <- c(1:100)
 
 # Return Leemis or Cho-Gains
-#input= "Leemis" returns leemis statistic, 
-#input = "Cho-Gains" returns Cho-Gains Statistic, and full digit distribution 
-# any other input returns both, and full digit distribution 
+# input= "Leemis" returns leemis statistic. input ="Full Leemis" returns full digit distribution 
+# input = "Cho-Gains" returns Cho-Gains Statistic. input = "Full ChoGains" returns full digit distribution 
+# input = "Full Both" returns the full distribution for Leemis and Cho-Gains
+# input = "All" returns a list containing the results, including the full digit distribution
+# any other input returns both statistics 
 Leemis.or.ChoGains <- function(input,data){ 
   
   ## Gets first digit 
@@ -43,13 +45,25 @@ Leemis.or.ChoGains <- function(input,data){
   } else if(input == "ChoGains") { #If input is "ChoGains"
     return(as.numeric(ChoGains))
     #Then print chogains results only
+    
+    #Controls for full digit distribution 
+   } else if(input == "Full ChoGains") { #If input is "ChoGains"
+      return(as.numeric(ChoGains.full))
+   } else if(input == "Full Leemis") { 
+      return(as.numeric(leemis.full))
+   } else if(input == "Full Both") { 
+       return(as.numeric(c(leemis.full, ChoGains.full)))
+     
+  # returns list containing results and distribution     
+   } else if(input == "All") { 
+     return(as.numeric(c(leemis.full, ChoGains.full, leemis, ChoGains)))
+         
   } else{ # if input is anything else
-    return(c(leemis, ChoGains))
-    return(c(leemis.full, ChoGains.full))#Print both Leemis and ChoGains results 
+    return(c(leemis, ChoGains))#Print both Leemis and ChoGains results 
   }
 }
 
-Leemis.or.ChoGains( "ChoGains" , data)
+Leemis.or.ChoGains( "All" , data)
 
 
 #Question 2 
@@ -95,7 +109,7 @@ print.benfords = function(data){
   colnames(benfords.table) = c("Statistic", "Significance")
   
   ### print
-  print(benfords.table)
+  print.table(benfords.table)
   ### Displays key to asterisks
   cat("  
       No star indicates a > .10 , * indicates a < .10, ** indicates a < .05, 
@@ -109,7 +123,7 @@ print.benfords(data)
 Benfords.CSV <- function(data){
   ## Makes a file
   sink(file = "Benfords_data.csv")
-  print.benfords(votes)
+  print.benfords(data)
   ## sinks file
   sink()
 }
