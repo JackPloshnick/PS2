@@ -38,14 +38,14 @@ Leemis.or.ChoGains <- function(input,data){
   
   #control system 
   if(input == "Leemis") {  #If input is "Leemis"
-    print(leemis)
-    print(leemis.full )# Then print the leemis results only
+    return(as.numeric(leemis))
+   # Then print the leemis results only
   } else if(input == "ChoGains") { #If input is "ChoGains"
-    print(ChoGains)
-    print(ChoGains.full )#Then print chogains results only
+    return(as.numeric(ChoGains))
+    #Then print chogains results only
   } else{ # if input is anything else
-    print(c(leemis, ChoGains))
-    print(c(leemis.full, ChoGains.full))#Print both Leemis and ChoGains results 
+    return(c(leemis, ChoGains))
+    return(c(leemis.full, ChoGains.full))#Print both Leemis and ChoGains results 
   }
 }
 
@@ -54,52 +54,48 @@ Leemis.or.ChoGains( "ChoGains" , data)
 
 #Question 2 
 
-#Tells you Leemis signifigance level
-Critical.Values.Leemis <- function(data){
-  if(leemis(data) >= .851 & leemis(data) < .966){  #if Leemis stat between .851 and .966, return .10 signifigance
-    print("*")
-   }else if(leemis(data) >= .967 & leemis(data) < 1.211){ #if leemis stat between .967 and 1.211, return .05 signifigance
-    print("**")
-  }else if(leemis(data) >= 1.212) { # if leemis stat bigger than 1.212, return .01 signifigance
-    print("***")
-  }else { #if leemis stat less than ,851, return no signifigance 
-    print(" ")
-  }
-}
-
-Critical.Values.Leemis(data)
-
-#Tells you Cho-Gains signifigance value
-Critical.Values.ChoGains <- function(data){
-  if(ChoGains(data) >= 1.212 & ChoGains(data) < 1.329){
-    print("*")
-  }else if(ChoGains(data) >= 1.330 & ChoGains(data) < 1.568){
-    print("**")
-  }else if(leemis(data) >= 1.569) {
-    print("***")
-  }else {
-    print(" ")
-  }
-}
-
-Critical.Values.ChoGains(data)
-
-
-
-
 #######
 print.benfords = function(data){
   
+  ## Leemis critical values 
+  x = data
+  a = Leemis.or.ChoGains("Leemis", x)
+  
+  if(a >= .851 & a < .966){  #if Leemis stat between .851 and .966, return .10 signifigance
+    Critical.Value.Leemis = "*"
+  }else {
+    if(a >= .967 & a < 1.211){ #if leemis stat between .967 and 1.211, return .05 signifigance
+      Critical.Values.Leemis = "**"
+    }else {
+      if(a >= 1.212) { # if leemis stat bigger than 1.212, return .01 signifigance
+       Critical.Values.Leemis = "***"
+      }else { #if leemis stat less than ,851, return no signifigance 
+        Critical.Values.Leemis =" " 
+      }
+    }
+  }
+  
+  ## ChoGains Critical value 
+  if( Leemis.or.ChoGains("ChoGains", data) >= 1.212 & Leemis.or.ChoGains("ChoGains", data) < 1.329){
+    Critical.Values.ChoGains ="*"
+  }else if(Leemis.or.ChoGains("ChoGains", data) >= 1.330 & Leemis.or.ChoGains("ChoGains", data) < 1.568){
+    Critical.Values.ChoGains= "**"
+  }else if(Leemis.or.ChoGains("ChoGains", data) >= 1.569) {
+    Critical.Values.ChoGains = "***"
+  }else {
+    Critical.Values.ChoGains = " "
+  }
+  
   ### Makes it all a table
-  benfords.table = rbind(c(leemis(data),Critical.Values.Leemis(data)),
-                          c(ChoGains(data), Critical.Values.ChoGains(data)))
+  benfords.table = rbind(c(Leemis.or.ChoGains("Leemis", data),Critical.Values.Leemis),
+                          c(Leemis.or.ChoGains("ChoGains", data), Critical.Values.ChoGains))
   
   ### adds names
   rownames(benfords.table) = c("Leemis","Cho-gaines'")
   colnames(benfords.table) = c("Statistic", "Significance")
   
   ### print
-  print.table(benfords.table)
+  print(benfords.table)
   ### Displays key to asterisks
   cat("  
       No star indicates a > .10 , * indicates a < .10, ** indicates a < .05, 
